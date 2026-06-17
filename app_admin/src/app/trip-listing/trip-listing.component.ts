@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Trip } from '../models/trip';
 import { TripDataService } from '../services/trip-data.service';
 import { TripCardComponent } from '../trip-card/trip-card.component';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   selector: 'app-trip-listing',
@@ -18,11 +19,16 @@ export class TripListingComponent implements OnInit {
 
   constructor(
     private tripDataService: TripDataService,
-    private router: Router
+    private router: Router,
+    private authenticationService: AuthenticationService
   ) { }
 
   ngOnInit(): void {
     this.getTrips();
+  }
+
+  isLoggedIn(): boolean {
+    return this.authenticationService.isLoggedIn();
   }
 
   getTrips(): void {
@@ -39,10 +45,18 @@ export class TripListingComponent implements OnInit {
   }
 
   addTrip(): void {
+    if (!this.isLoggedIn()) {
+      this.router.navigate(['login']);
+      return;
+    }
     this.router.navigate(['add-trip']);
   }
 
   deleteTrip(tripCode: string): void {
+    if (!this.isLoggedIn()) {
+      this.router.navigate(['login']);
+      return;
+    }
     this.tripDataService.deleteTrip(tripCode).subscribe({
       next: () => this.getTrips(),
       error: (error: any) => console.log('Error:', error)
