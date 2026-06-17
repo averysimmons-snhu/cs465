@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f8f9fa;
+}
+.card {
+  height: 100%;
+}
+.card-img-top {
+  height: 160px;
+  object-fit: cover;
+}
+.form-group {
+  margin-bottom: 1rem;
+}
